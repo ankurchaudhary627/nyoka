@@ -8,7 +8,6 @@ import unittest
 from nyoka import ExponentialSmoothingToPMML
 from nyoka import ArimaToPMML
 
-
 class TestMethods(unittest.TestCase):
 
     
