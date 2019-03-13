@@ -55,107 +55,99 @@ class TestMethods(unittest.TestCase):
                 ts_data.name = 'oil_production'
                 return ts_data
 
-        ts_data = import_data(trend=False, seasonality=False)
+        def make_mod_and_res_obj(t,d,s,sp):
+            model_obj = hw.ExponentialSmoothing(ds, 
+                                            trend=t, 
+                                            damped=d, 
+                                            seasonal=s, 
+                                            seasonal_periods=sp)
+            results_obj = model_obj.fit(optimized=True)
+            return model_obj,results_obj
 
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend=None, 
-                                    damped=False, 
-                                    seasonal=None, 
-                                    seasonal_periods=None)
+        trend=[True,False]
+        seasonal=[True,False]
+        for i in trend:
+            for j in seasonal:
+                if i and j:
+                    ts_data=import_data(trend=i, seasonality=j)
 
-        results_obj = model_obj.fit(optimized=True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ts_data = import_data(trend=True, seasonality=False)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='add', 
-                                    damped=False, 
-                                    seasonal=None, 
-                                    seasonal_periods=None)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        results_obj = model_obj.fit(optimized=True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='mul', 
-                                    damped=False, 
-                                    seasonal=None, 
-                                    seasonal_periods=None)
+                elif i and not j:
+                    ds=import_data(trend=i,seasonality=j)
 
-        results_obj = model_obj.fit(optimized=True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='mul', 
-                                    damped=True, 
-                                    seasonal=None, 
-                                    seasonal_periods=None)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        results_obj = model_obj.fit(optimized=True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ts_data = import_data(trend=True, seasonality=True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='add', 
-                                    damped=False, 
-                                    seasonal='add', 
-                                    seasonal_periods=4)
+                elif not i and not j:
+                    ds=import_data(trend=i,seasonality=j)
 
-        results_obj = model_obj.fit(optimized=True)
+                    mod,res=make_mod_and_res_obj(t=None,d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
-
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
-
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='add', 
-                                    damped=True, 
-                                    seasonal='add', 
-                                    seasonal_periods=4)
-
-        results_obj = model_obj.fit(optimized=True)
-
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
-
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
-
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='add', 
-                                    damped=False, 
-                                    seasonal='mul', 
-                                    seasonal_periods=4)
-
-        results_obj = model_obj.fit(optimized=True)
-
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
-
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
-
-        model_obj = hw.ExponentialSmoothing(ts_data, 
-                                    trend='add', 
-                                    damped=False, 
-                                    seasonal='mul', 
-                                    seasonal_periods=4)
-
-        results_obj = model_obj.fit(optimized=True)
-
-        ExponentialSmoothingToPMML(ts_data, model_obj, results_obj, 'exponential_smoothing.pmml')
-
-        self.assertEqual(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t=None,d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
+                    print(os.path.isfile("exponential_smoothing.pmml"),True)
 
 
     def test_seasonalArima_01(self):
@@ -197,10 +189,3 @@ class TestMethods(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main(warnings='ignore')
-
-
-
-
-
-
-
