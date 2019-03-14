@@ -65,7 +65,7 @@ class TestMethods(unittest.TestCase):
     def test_exponentialSmoothing_01(self):
                 
         # importing data with trend and seasonality present
-        ds=import_data(trend=True, seasonality=True)
+        ds=self.import_data(trend=True, seasonality=True)
 
         mod,res=make_mod_and_res_obj(ds,t='add',d=True,s='add',sp=2)
         ExponentialSmoothingToPMML(ds, mod,res, f_name)
@@ -110,7 +110,7 @@ class TestMethods(unittest.TestCase):
     def test_exponentialSmoothing_02(self):
         
         # importing data with trend but no seasonality
-        ds=import_data(trend=True, seasonality=False)
+        ds=self.import_data(trend=True, seasonality=False)
         
         mod,res=make_mod_and_res_obj(ds,t='add',d=True,s=None,sp=2)
         ExponentialSmoothingToPMML(ds, mod,res, f_name)
@@ -155,7 +155,7 @@ class TestMethods(unittest.TestCase):
     def test_exponentialSmoothing_03(self):
         
         # importing data with no trend and no seasonality
-        ds=import_data(trend=False, seasonality=False)
+        ds=self.import_data(trend=False, seasonality=False)
         
         mod,res=make_mod_and_res_obj(ds,t=None,d=False,s=None,sp=None)
         ExponentialSmoothingToPMML(ds, mod,res, f_name)
