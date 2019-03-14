@@ -10,7 +10,6 @@ from nyoka import ArimaToPMML
 
 class TestMethods(unittest.TestCase):
     
-    f_name='exponential_smoothing.pmml'
     
     def test_exponentialSmoothing_01(self):
                 
@@ -24,6 +23,8 @@ class TestMethods(unittest.TestCase):
         ts_data = pd.Series(data, index)
         ts_data.index.name = 'datetime_index'
         ts_data.name = 'n_visitors'
+        
+        f_name='exponential_smoothing.pmml'
 
         model_obj = hw.ExponentialSmoothing(ts_data, 
                                         trend='add', 
@@ -132,6 +133,7 @@ class TestMethods(unittest.TestCase):
         ts_data.index.name = 'datetime_index'
         ts_data.name = 'n_passengers'
         
+        f_name='exponential_smoothing.pmml'
         
         model_obj = hw.ExponentialSmoothing(ts_data, 
                                         trend='add', 
@@ -240,6 +242,7 @@ class TestMethods(unittest.TestCase):
         ts_data.index.name = 'datetime_index'
         ts_data.name = 'oil_production'
         
+        f_name='exponential_smoothing.pmml'
         
         model_obj = hw.ExponentialSmoothing(ts_data, 
                                         trend=None, 
