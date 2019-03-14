@@ -4,66 +4,66 @@ import numpy as np
 from statsmodels.tsa.base import tsa_model as tsa
 from statsmodels.tsa import holtwinters as hw
 from statsmodels.tsa.statespace import sarimax
-from statsmodels.tsa.arima_model import ARIMA
 import unittest
 from nyoka import ExponentialSmoothingToPMML
 from nyoka import ArimaToPMML
 
 class TestMethods(unittest.TestCase):
     
-    def test_exponentialSmoothing(self):
-        def import_data(trend=False, seasonality=False):
-            """
-            Returns a dataframe with time series values.
-            :param trend: boolean
-                If True, returns data with trend
-            :param seasonality: boolean
-                If True, returns data with seasonality
-            :return: ts_data: DataFrame
-                Index of the data frame is either a time-index or an integer index. First column has time series values
-            """
-            if trend and seasonality:
-                # no of international visitors in Australia
-                data = [41.7275, 24.0418, 32.3281, 37.3287, 46.2132, 29.3463, 36.4829, 42.9777, 48.9015, 31.1802, 37.7179,
-                        40.4202, 51.2069, 31.8872, 40.9783, 43.7725, 55.5586, 33.8509, 42.0764, 45.6423, 59.7668, 35.1919,
-                        44.3197, 47.9137]
-                index = pd.DatetimeIndex(start='2005', end='2010-Q4', freq='QS')
-                ts_data = pd.Series(data, index)
-                ts_data.index.name = 'datetime_index'
-                ts_data.name = 'n_visitors'
-                return ts_data
-            elif trend:
-                # no. of annual passengers of air carriers registered in Australia
-                data = [17.5534, 21.86, 23.8866, 26.9293, 26.8885, 28.8314, 30.0751, 30.9535, 30.1857, 31.5797, 32.5776,
-                        33.4774, 39.0216, 41.3864, 41.5966]
-                index = pd.DatetimeIndex(start='1990', end='2005', freq='A')
-                ts_data = pd.Series(data, index)
-                ts_data.index.name = 'datetime_index'
-                ts_data.name = 'n_passengers'
-                return ts_data
-            elif seasonality:
-                pass
-            else:
-                # Oil production in Saudi Arabia
-                data = [446.6565, 454.4733, 455.663, 423.6322, 456.2713, 440.5881, 425.3325, 485.1494, 506.0482, 526.792,
-                        514.2689, 494.211]
-                index = pd.DatetimeIndex(start='1996', end='2008', freq='A')
-                ts_data = pd.Series(data, index)
-                ts_data.index.name = 'datetime_index'
-                ts_data.name = 'oil_production'
-                return ts_data
-
-        def make_mod_and_res_obj(ds,t,d,s,sp):
-            model_obj = hw.ExponentialSmoothing(ds, 
-                                            trend=t, 
-                                            damped=d, 
-                                            seasonal=s, 
-                                            seasonal_periods=sp)
-            results_obj = model_obj.fit(optimized=True)
-            return model_obj,results_obj
-        
-        f_name='exponential_smoothing.pmml'
-        
+    def import_data(trend=False, seasonality=False):
+        """
+        Returns a dataframe with time series values.
+        :param trend: boolean
+            If True, returns data with trend
+        :param seasonality: boolean
+            If True, returns data with seasonality
+        :return: ts_data: DataFrame
+            Index of the data frame is either a time-index or an integer index. First column has time series values
+        """
+        if trend and seasonality:
+            # no of international visitors in Australia
+            data = [41.7275, 24.0418, 32.3281, 37.3287, 46.2132, 29.3463, 36.4829, 42.9777, 48.9015, 31.1802, 37.7179,
+                    40.4202, 51.2069, 31.8872, 40.9783, 43.7725, 55.5586, 33.8509, 42.0764, 45.6423, 59.7668, 35.1919,
+                    44.3197, 47.9137]
+            index = pd.DatetimeIndex(start='2005', end='2010-Q4', freq='QS')
+            ts_data = pd.Series(data, index)
+            ts_data.index.name = 'datetime_index'
+            ts_data.name = 'n_visitors'
+            return ts_data
+        elif trend:
+            # no. of annual passengers of air carriers registered in Australia
+            data = [17.5534, 21.86, 23.8866, 26.9293, 26.8885, 28.8314, 30.0751, 30.9535, 30.1857, 31.5797, 32.5776,
+                    33.4774, 39.0216, 41.3864, 41.5966]
+            index = pd.DatetimeIndex(start='1990', end='2005', freq='A')
+            ts_data = pd.Series(data, index)
+            ts_data.index.name = 'datetime_index'
+            ts_data.name = 'n_passengers'
+            return ts_data
+        elif seasonality:
+            pass
+        else:
+            # Oil production in Saudi Arabia
+            data = [446.6565, 454.4733, 455.663, 423.6322, 456.2713, 440.5881, 425.3325, 485.1494, 506.0482, 526.792,
+                    514.2689, 494.211]
+            index = pd.DatetimeIndex(start='1996', end='2008', freq='A')
+            ts_data = pd.Series(data, index)
+            ts_data.index.name = 'datetime_index'
+            ts_data.name = 'oil_production'
+            return ts_data
+    
+    def make_mod_and_res_obj(ds,t,d,s,sp):
+        model_obj = hw.ExponentialSmoothing(ds, 
+                                        trend=t, 
+                                        damped=d, 
+                                        seasonal=s, 
+                                        seasonal_periods=sp)
+        results_obj = model_obj.fit(optimized=True)
+        return model_obj,results_obj
+    
+    f_name='exponential_smoothing.pmml'
+    
+    def test_exponentialSmoothing_01(self):
+                
         # importing data with trend and seasonality present
         ds=import_data(trend=True, seasonality=True)
 
@@ -107,7 +107,9 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(os.path.isfile(f_name),True)
         os.remove(f_name)
         
-        # importing data with trend and without seasonality
+    def test_exponentialSmoothing_02(self):
+        
+        # importing data with trend but no seasonality
         ds=import_data(trend=True, seasonality=False)
         
         mod,res=make_mod_and_res_obj(ds,t='add',d=True,s=None,sp=2)
@@ -150,6 +152,8 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(os.path.isfile(f_name),True)
         os.remove(f_name)
         
+    def test_exponentialSmoothing_03(self):
+        
         # importing data with no trend and no seasonality
         ds=import_data(trend=False, seasonality=False)
         
@@ -190,7 +194,10 @@ class TestMethods(unittest.TestCase):
                 except:
                     continue
                 finally:
-                    self.assertEqual(os.path.isfile(file_name),True)
+                    exported = os.path.isfile(file_name)
+                    self.assertEqual(exported,True)
+                    if(not exported):
+                        break
             except:
                 continue
 
@@ -243,7 +250,10 @@ class TestMethods(unittest.TestCase):
                 except:
                     continue
                 finally:
-                    self.assertEqual(os.path.isfile(file_name),True)
+                    exported = os.path.isfile(file_name)
+                    self.assertEqual(exported,True)
+                    if(not exported):
+                        break
             except:
                 continue
 
