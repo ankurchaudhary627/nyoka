@@ -8,6 +8,7 @@ import unittest
 from nyoka import ExponentialSmoothingToPMML
 from nyoka import ArimaToPMML
 
+
 class TestMethods(unittest.TestCase):
 
     
@@ -54,7 +55,7 @@ class TestMethods(unittest.TestCase):
                 ts_data.name = 'oil_production'
                 return ts_data
 
-        def make_mod_and_res_obj(ds,t,d,s,sp):
+        def make_mod_and_res_obj(t,d,s,sp):
             model_obj = hw.ExponentialSmoothing(ds, 
                                             trend=t, 
                                             damped=d, 
@@ -65,88 +66,127 @@ class TestMethods(unittest.TestCase):
 
         trend=[True,False]
         seasonal=[True,False]
+        f_name='exponential_smoothing.pmml'
+
         for i in trend:
             for j in seasonal:
                 if i and j:
-                    ts_data=import_data(trend=i, seasonality=j)
+                    ds=import_data(trend=i, seasonality=j)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=True,s='add',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=False,s='add',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=True,s='mul',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=False,s='mul',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=True,s='add',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=False,s='add',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s='add',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=True,s='mul',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=False,s='mul',sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s='mul',sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
                 elif i and not j:
                     ds=import_data(trend=i,seasonality=j)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=True,s=None,sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=True,s=None,sp=None)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=True,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=False,s=None,sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='add',d=False,s=None,sp=None)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='add',d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=True,s=None,sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=True,s=None,sp=None)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=True,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=False,s=None,sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t='mul',d=False,s=None,sp=None)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t='mul',d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
+    #                 print(os.path.isfile("exponential_smoothing.pmml"),True)
 
                 elif not i and not j:
                     ds=import_data(trend=i,seasonality=j)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t=None,d=False,s=None,sp=None)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t=None,d=False,s=None,sp=None)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
-                    mod,res=make_mod_and_res_obj(ts_data,t=None,d=False,s=None,sp=2)
-                    ExponentialSmoothingToPMML(ts_data, mod,res, 'exponential_smoothing.pmml')
-                    print(os.path.isfile("exponential_smoothing.pmml"),True)
+                    mod,res=make_mod_and_res_obj(t=None,d=False,s=None,sp=2)
+                    ExponentialSmoothingToPMML(ds, mod,res, f_name)
+                    self.assertEqual(os.path.isfile(f_name),True)
+#                     print(os.path.isfile(f_name))
+                    os.remove(f_name)
 
 
     def test_seasonalArima_01(self):
