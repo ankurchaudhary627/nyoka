@@ -101,7 +101,7 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(os.path.isfile(f_name),True)
         os.remove(f_name)
         
-        mod,res=make_mod_and_res_obj(t='mul',d=False,s='mul',sp=2)
+        mod,res=make_mod_and_res_obj(ds,t='mul',d=False,s='mul',sp=2)
         ExponentialSmoothingToPMML(ds, mod,res, f_name)
         self.assertEqual(os.path.isfile(f_name),True)
         os.remove(f_name)
